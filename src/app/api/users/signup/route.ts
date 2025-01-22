@@ -33,16 +33,18 @@ export async function POST(request: NextRequest) {
       password: hashedPassword,
     });
 
-    const saveUser = await newUser.save();
-    console.log(saveUser);
+    const savedUser = await newUser.save();
+    console.log(savedUser);
+
+    const userId = savedUser._id;
 
     //send verification email
-    await sendEmail({ email, emailType: "VERIFY", userId: saveUser._id });
+    await sendEmail({ email, emailType: "VERIFY", userId: userId });
 
     return NextResponse.json({
       message: "User registered successfully",
       success: true,
-      saveUser,
+      savedUser,
     });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });

@@ -8,7 +8,9 @@ connectDB();
 export async function POST(request: NextRequest) {
   //extract data from token
   const userId = await getDataFromToken(request);
-  const user = await User.findOne({ _id: userId }).select("-password");
+  const user = await User.findOne({ _id: userId }).select(
+    "-verifyToken -verifyTokenExpiry -password"
+  );
   //check if there is no user
   return NextResponse.json({ message: "User found", data: user });
 }
